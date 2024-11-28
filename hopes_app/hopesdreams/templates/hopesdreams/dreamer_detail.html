@@ -1,0 +1,29 @@
+{% extends 'hopesdreams/base_template.html' %}
+
+{% block pagetitle %}{{dreamer.firstname}} {{dreamer.lastname}}{% endblock %}
+
+{% block maincontent %}
+<h2>Dreamer Details</h2>
+
+<ul>
+    <li>Name: {{ dreamer.firstname }}  {{dreamer.lastname}}</li>    
+</ul>
+
+{% if dreamer.dream_set.exists %}
+
+<h3>Dreams</h3>
+
+<ul>
+    {% for dream in dreamer.dream_set.all %}
+
+    <li>{{ dream.description }}</li>
+    {% endfor %}
+
+</ul>
+{% else %}
+
+<p>No addresses found for this customer.</p>
+
+{% endif %}
+
+{% endblock %}

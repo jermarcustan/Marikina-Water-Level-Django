@@ -1,0 +1,13 @@
+{% extends 'hopesdreams/base_template.html' %}
+
+{% block pagetitle %}Dreamers{% endblock %}
+
+{% block maincontent %}
+<h2>Dreamers</h2>
+<ul>
+    {% for dreamer in dreamerlist %}
+        <li>#{{dreamer.id}} - {{dreamer.firstname}} {{ dreamer.lastname }} 
+        </li>
+    {% endfor %}
+</ul>
+{% endblock %}

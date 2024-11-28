@@ -1,0 +1,16 @@
+{% extends 'hopesdreams/base_template.html' %}
+
+{% block pagetitle %}Dreamer Form {% endblock %}
+
+{% block maincontent %}
+
+<h2>Dreamer</h2>
+
+<form method = 'post'>
+    {% csrf_token %}
+    {{ form.as_ul }}
+    <input type = 'submit' value = 'Submit'>
+</form>
+
+
+{% endblock %}

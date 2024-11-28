@@ -1,0 +1,20 @@
+{% extends 'finalsapp/base_template.html' %}
+
+{% if action == 'add' %}
+
+{% block add_active %}active{% endblock %}
+
+{% elif action == 'update' %}
+
+{% block update_active %}active{% endblock %}
+
+{% endif %}
+
+{% block content %}
+
+<p>{{ action }}</p>
+<p>Insert form here</p>
+
+{% endblock %}
+
+{% block position%}fixed-bottom{% endblock %}
