@@ -6,6 +6,16 @@
 
 <p>Delete Record {{ datetime }}</p>
 
+<form method = "post">
+
+    {% csrf_token %}
+    <p>Are you sure you want to delete the record at {{datetime}}</p>
+    <a href="{% url 'finalsapp:list-records' 1 %}" class="btn btn-secondary">Cancel</a>
+    <input type="submit" value="Yes" class="btn btn-danger">
+    
+</form>
+
 {% endblock %}
 
 {% block position %}fixed-bottom{% endblock %}
+

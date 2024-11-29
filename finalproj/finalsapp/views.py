@@ -1,4 +1,4 @@
-from django.shortcuts import render
+from django.shortcuts import render,redirect, get_object_or_404
 from .models import DateTime, Record
 from math import ceil
 import plotly
@@ -7,6 +7,8 @@ import json
 import plotly.offline
 from django.db.models import Q
 from datetime import timedelta
+from.forms import DateTimeForm
+
 
 
 # Create your views here.
@@ -14,20 +16,39 @@ def index(request):
     return render(request, "finalsapp/welcome.html")
 
 def add_record(request):
-    context = {"action": "Add"}
-    return render(request, "finalsapp/record_form.html", context)
+    if request.method == 'GET':
+        form = DateTimeForm()
+    if request.method == 'POST':
+        form = DateTimeForm(request.POST)
+        if form.is_valid():
+            form.save()
+            return redirect('/finalsapp/records/1/')
+    else:
+        form = DateTimeForm()
+    context = {"form": form, "action": "Add" }
+    return render(request, 'finalsapp/record_form.html', context)
 
-def update_record(request):
-    context = {"action": "Update"}
-    return render(request, "finalsapp/record_form.html", context)
-
+def update_record(request, pk):
+    dt = DateTime.objects.get(id = pk)
+    if request.method == 'GET':
+        form = DateTimeForm(instance = dt)
+    elif request.method == 'POST':
+        form = DateTimeForm(request.POST, instance = dt)
+        if form.is_valid():
+            form.save()
+            return redirect('/finalsapp/records/1/')
+    context = {'form': form, 'action': 'Edit'}
+    return render(request, 'finalsapp/record_form.html', context)
+        
 def delete_record(request, pk):
-    dt = DateTime.objects.get(id=pk)
-
-    context = {'datetime': dt}
-
-    return render(request, "finalsapp/delete_record.html", context)
-
+    dt = get_object_or_404(DateTime, id = pk)
+    if request.method == 'GET':
+        context = {'datetime': dt}
+        return render(request, 'finalsapp/delete_record.html', context)
+    elif request.method == 'POST':
+        dt.delete()
+        return redirect('/finalsapp/records/1/')
+    
 def list_records(request, pg):
     filter_date = request.GET.get('date')
     

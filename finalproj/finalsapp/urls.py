@@ -8,7 +8,7 @@ urlpatterns = [
 
     path("new/", views.add_record, name='add-record'),
 
-    path("edit/", views.update_record, name='update-record'),
+    path("edit/<int:pk>/", views.update_record, name='update-record'),
 
     path("delete/<int:pk>/", views.delete_record, name='delete-record'),
 
