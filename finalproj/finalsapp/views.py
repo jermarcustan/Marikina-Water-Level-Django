@@ -29,7 +29,16 @@ def delete_record(request, pk):
     return render(request, "finalsapp/delete_record.html", context)
 
 def list_records(request, pg):
-    records = DateTime.objects.all()
+    filter_date = request.GET.get('date')
+    
+    datetime_queryset = DateTime.objects.all()
+    
+    if filter_date:
+        datetime_queryset = datetime_queryset.filter(
+            datetime__date=filter_date
+        )    
+    
+    records = datetime_queryset
     num_records = DateTime.objects.count()
     max_pg = ceil(num_records/50)
     second_to_last_pg = max_pg - 1
