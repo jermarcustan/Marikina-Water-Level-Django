@@ -14,5 +14,7 @@ urlpatterns = [
 
     path("records/<int:pg>/", views.list_records, name='list-records'),
 
-    path("datetimes/<int:pk>/", views.datetime_detail, name='datetime-detail')
+    path("datetimes/<int:pk>/", views.datetime_detail, name='datetime-detail'),
+
+    path("queries", views.query_records, name='query-records')
 ]

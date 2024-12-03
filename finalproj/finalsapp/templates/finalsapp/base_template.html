@@ -23,6 +23,7 @@
                 <div class="navbar-nav">
                     <a class="nav-item nav-link {% block all_active %}{% endblock %}" href="{% url 'finalsapp:list-records' 1 %}">All Records</a>
                     <a class="nav-item nav-link {% block add_active %}{% endblock %}" href="{% url 'finalsapp:add-record' %}">Add Record</a>
+                    <a class="nav-item nav-link {% block query_active %}{% endblock %}" href="{% url 'finalsapp:query-records' %}">Queries</a>
                 </div>
             </div>
         </nav>

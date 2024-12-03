@@ -1,13 +1,15 @@
 {% extends 'finalsapp/base_template.html' %}
 {% load static %}
+
 {% block content%}
 <h3>Complete Database of Rainfall and Water Level Data at the Marikina River Basin</h3>
 
 <p>Welcome to our lovely website 😊! We are Brynx, Neil, and Jer, fifth-year M DSc students from Ateneo de Manila University. We believe that data is a powerful tool for understanding and addressing critical environmental issues. </p>
 
-<p>This website contains complete and accurate records of hourly water level and rainfall data along the Marikina River Basin (MRB) starting from 2022. </p>
-<p>You can click the All Records button in the navigation bar to view the complete hourly rainfall and water level dataset.</p>
-<p>Moreover, you can click the Add Record button to add to our database.</p>
+<p>This website contains complete and accurate records of hourly water level and rainfall data along the Marikina River Basin (MRB) in July 2022. </p>
+<p>You can click the <a href="{% url 'finalsapp:list-records' 1 %}">All Records</a> button in the navigation bar to view the complete hourly rainfall and water level dataset.</p>
+<p>Moreover, you can click the <a href="{% url 'finalsapp:add-record' %}">Add Record</a> button to add to our database.</p>
+<p>Finally, click the <a href="{% url 'finalsapp:query-records' %}">Queries</a> button to run queries on the database.</p>
 
 <h3>The Marikina River Basin</h3>
 
@@ -20,4 +22,4 @@
 
 {% endblock %}
 
-{% block position %}fixed-bottom{% endblock %}
+{% block position %}sticky-bottom{% endblock %}

@@ -1,35 +1,41 @@
 {% extends 'finalsapp/base_template.html' %}
 
 {% block content %}
-Show datetime and recorded values for {{ datetime }}:
+<!-- Show datetime and recorded values for {{ datetime }}: -->
 
-<ul>
+<!-- <ul>
     <li>The water level at Sto. Nino is {{ Sto_Nino }} m.</li>
     <li>The total rainfall at Mt. Aries is {{ Mt_Aries }} cm. </li>
     <li>The total rainfall at Boso-Boso is {{ Boso_Boso }} cm. </li>
     <li>The total rainfall at Mt. Campana is {{ Mt_Campana }} cm. </li>
     <li>The total rainfall at Nangka is {{ Nangka }} cm. </li>
     <li>The total rainfall at Mt. Oro is {{ Mt_Oro }} cm. </li>
+</ul> -->
+
+<ul>
+    {% for record in datetime.record_set.all %}
+        <li>{{ record }}</li>
+    {% endfor %}
 </ul>
 
-    <div class="card mt-4">
-        <div class="card-header">
-            <h2>Water Level Plot</h2>
-        </div>
-        <div class="card-body">
-            {{ plot_div_waterlevel|safe }}
-        </div>
+<div class="card mt-4">
+    <div class="card-header">
+        <h2>Water Level Plot</h2>
     </div>
-
-    <div class="card mt-4">
-        <div class="card-header">
-            <h2>Rainfall Plot</h2>
-        </div>
-        <div class="card-body">
-            {{ plot_div_rainfall|safe }}
-        </div>
+    <div class="card-body">
+        {{ plot_div_waterlevel|safe }}
     </div>
 </div>
+
+<div class="card mt-4">
+    <div class="card-header">
+        <h2>Rainfall Plot</h2>
+    </div>
+    <div class="card-body">
+        {{ plot_div_rainfall|safe }}
+    </div>
+</div>
+
 {% endblock %}
 
 {% block position %}fixed-bottom{% endblock %}

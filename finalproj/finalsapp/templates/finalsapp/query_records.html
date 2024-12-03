@@ -1,0 +1,186 @@
+{% extends 'finalsapp/base_template.html' %}
+
+{% block query_active %}active{% endblock %}
+
+{% block content %}
+
+<form method="get" class="mb-3">
+    <div class="row mb-3">
+        <div class="col-md-6">
+            <div class="input-group">
+                <label class="input-group-text">Filter by Date and/or Time:</label>
+                <input type="date" name="date" class="form-control" 
+                    value="{{ request.GET.date|default_if_none:'' }}">
+                <input type="time" name="time" class="form-control"
+                    value="{{ request.GET.time|default_if_none:'' }}">
+            </div>
+        </div>
+    </div>
+    
+    <div class="row mb-3">
+        <div class="col-md-6">
+            <div class="input-group">
+                <!-- https://getbootstrap.com/docs/5.3/forms/input-group/#custom-select -->
+                <label class="input-group-text" for="query_station">Station:</label>
+                <!-- https://stackoverflow.com/questions/11586038/how-to-get-the-value-from-the-drop-down-box-django -->
+                <select class="form-select" id="query_station" name="station">
+                    <!-- https://stackoverflow.com/questions/30488270/select-default-value-of-select-element-in-django -->
+                    <option value="All Stations" {% if request.GET.station == "All Stations" %}selected{% endif %}>Select a station:</option>
+                    <option value="Sto. Nino" {% if request.GET.station == "Sto. Nino" %}selected{% endif %}>Sto. Nino</option>
+                    <option value="Mt. Aries" {% if request.GET.station == "Mt. Aries" %}selected{% endif %}>Mt. Aries</option>
+                    <option value="Boso-Boso" {% if request.GET.station == "Boso-Boso" %}selected{% endif %}>Boso-Boso</option>
+                    <option value="Mt. Campana" {% if request.GET.station == "Mt. Campana" %}selected{% endif %}>Mt. Campana</option>
+                    <option value="Nangka" {% if request.GET.station == "Nangka" %}selected{% endif %}>Nangka</option>
+                    <option value="Mt. Oro" {% if request.GET.station == "Mt. Oro" %}selected{% endif %}>Mt. Oro</option>
+                </select>
+            </div>
+        </div>
+    </div>
+
+    <!-- <div class="input-group mb-3">
+        <div class="input-group-text me-2">
+            <label for="radios">Sort by:</label>
+        </div>
+        <div class="form-check form-check-inline mt-2" id="radios">
+            <input class="form-check-input" type="radio" name="sort" id="default" value="default" {% if request.GET.sort == "default" %}checked{% endif %}>
+            <label class="form-check-label" for="default">Default</label>
+        </div>
+        <div class="form-check form-check-inline mt-2">
+            <input class="form-check-input" type="radio" name="sort" id="asc" value="asc" {% if request.GET.sort == "asc" %}checked{% endif %}>
+            <label class="form-check-label" for="asc">Ascending</label>
+        </div>
+        <div class="form-check form-check-inline mt-2">
+            <input class="form-check-input" type="radio" name="sort" id="desc" value="desc" {% if request.GET.sort == "desc" %}checked{% endif %}>
+            <label class="form-check-label" for="desc">Descending</label>
+        </div>
+    </div> -->
+
+    <div class="row mb-3">
+        <div class="col-md">
+            <div class="input-group">
+                <button type="submit" class="btn btn-primary">Search</button>
+                <a href="{% url 'finalsapp:query-records' %}" class="btn btn-secondary">Clear</a>
+            </div>
+        </div>
+    </div>
+
+    <div class="input-group">
+    {% if query_station or query_dt %}
+
+    {% if search_station_name == 'All Stations' %}
+    <table class="table table-striped table-hover table-bordered">
+        <thead>
+            <tr>
+                <!-- https://www.w3schools.com/css/css_text_align.asp -->
+                <th scope="col" style="text-align: center;" class="align-middle">Date, Time</th>
+                <th scope="col" style="text-align: center;">
+                    Mt. Aries Rainfall
+                    <button type="submit" class="btn mb-2" name="sort" value="Mt. Aries">
+                        <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" fill="currentColor" class="bi bi-sort-numeric-down" viewBox="0 0 16 16">
+                        <path d="M12.438 1.668V7H11.39V2.684h-.051l-1.211.859v-.969l1.262-.906h1.046z"/>
+                        <path fill-rule="evenodd" d="M11.36 14.098c-1.137 0-1.708-.657-1.762-1.278h1.004c.058.223.343.45.773.45.824 0 1.164-.829 1.133-1.856h-.059c-.148.39-.57.742-1.261.742-.91 0-1.72-.613-1.72-1.758 0-1.148.848-1.835 1.973-1.835 1.09 0 2.063.636 2.063 2.687 0 1.867-.723 2.848-2.145 2.848zm.062-2.735c.504 0 .933-.336.933-.972 0-.633-.398-1.008-.94-1.008-.52 0-.927.375-.927 1 0 .64.418.98.934.98"/>
+                        <path d="M4.5 2.5a.5.5 0 0 0-1 0v9.793l-1.146-1.147a.5.5 0 0 0-.708.708l2 1.999.007.007a.497.497 0 0 0 .7-.006l2-2a.5.5 0 0 0-.707-.708L4.5 12.293z"/>
+                        </svg>
+                    </button>
+                </th>
+                <th scope="col" style="text-align: center;">
+                    Boso-Boso Rainfall
+                    <button type="submit" class="btn mb-2" name="sort" value="Boso-Boso">
+                        <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" fill="currentColor" class="bi bi-sort-numeric-down" viewBox="0 0 16 16">
+                        <path d="M12.438 1.668V7H11.39V2.684h-.051l-1.211.859v-.969l1.262-.906h1.046z"/>
+                        <path fill-rule="evenodd" d="M11.36 14.098c-1.137 0-1.708-.657-1.762-1.278h1.004c.058.223.343.45.773.45.824 0 1.164-.829 1.133-1.856h-.059c-.148.39-.57.742-1.261.742-.91 0-1.72-.613-1.72-1.758 0-1.148.848-1.835 1.973-1.835 1.09 0 2.063.636 2.063 2.687 0 1.867-.723 2.848-2.145 2.848zm.062-2.735c.504 0 .933-.336.933-.972 0-.633-.398-1.008-.94-1.008-.52 0-.927.375-.927 1 0 .64.418.98.934.98"/>
+                        <path d="M4.5 2.5a.5.5 0 0 0-1 0v9.793l-1.146-1.147a.5.5 0 0 0-.708.708l2 1.999.007.007a.497.497 0 0 0 .7-.006l2-2a.5.5 0 0 0-.707-.708L4.5 12.293z"/>
+                        </svg>
+                    </button>
+                </th>
+                <th scope="col" style="text-align: center;">
+                    Mt. Campana Rainfall
+                    <button type="submit" class="btn mb-2" name="sort" value="Mt. Campana">
+                        <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" fill="currentColor" class="bi bi-sort-numeric-down" viewBox="0 0 16 16">
+                        <path d="M12.438 1.668V7H11.39V2.684h-.051l-1.211.859v-.969l1.262-.906h1.046z"/>
+                        <path fill-rule="evenodd" d="M11.36 14.098c-1.137 0-1.708-.657-1.762-1.278h1.004c.058.223.343.45.773.45.824 0 1.164-.829 1.133-1.856h-.059c-.148.39-.57.742-1.261.742-.91 0-1.72-.613-1.72-1.758 0-1.148.848-1.835 1.973-1.835 1.09 0 2.063.636 2.063 2.687 0 1.867-.723 2.848-2.145 2.848zm.062-2.735c.504 0 .933-.336.933-.972 0-.633-.398-1.008-.94-1.008-.52 0-.927.375-.927 1 0 .64.418.98.934.98"/>
+                        <path d="M4.5 2.5a.5.5 0 0 0-1 0v9.793l-1.146-1.147a.5.5 0 0 0-.708.708l2 1.999.007.007a.497.497 0 0 0 .7-.006l2-2a.5.5 0 0 0-.707-.708L4.5 12.293z"/>
+                        </svg>
+                    </button>
+                </th>
+                <th scope="col" style="text-align: center;">
+                    Nangka Rainfall
+                    <button type="submit" class="btn mb-2" name="sort" value="Nangka">
+                        <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" fill="currentColor" class="bi bi-sort-numeric-down" viewBox="0 0 16 16">
+                        <path d="M12.438 1.668V7H11.39V2.684h-.051l-1.211.859v-.969l1.262-.906h1.046z"/>
+                        <path fill-rule="evenodd" d="M11.36 14.098c-1.137 0-1.708-.657-1.762-1.278h1.004c.058.223.343.45.773.45.824 0 1.164-.829 1.133-1.856h-.059c-.148.39-.57.742-1.261.742-.91 0-1.72-.613-1.72-1.758 0-1.148.848-1.835 1.973-1.835 1.09 0 2.063.636 2.063 2.687 0 1.867-.723 2.848-2.145 2.848zm.062-2.735c.504 0 .933-.336.933-.972 0-.633-.398-1.008-.94-1.008-.52 0-.927.375-.927 1 0 .64.418.98.934.98"/>
+                        <path d="M4.5 2.5a.5.5 0 0 0-1 0v9.793l-1.146-1.147a.5.5 0 0 0-.708.708l2 1.999.007.007a.497.497 0 0 0 .7-.006l2-2a.5.5 0 0 0-.707-.708L4.5 12.293z"/>
+                        </svg>
+                    </button>
+                </th>
+                <th scope="col" style="text-align: center;">
+                    Mt. Oro Rainfall
+                    <button type="submit" class="btn mb-2" name="sort" value="Mt. Oro">
+                        <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" fill="currentColor" class="bi bi-sort-numeric-down" viewBox="0 0 16 16">
+                        <path d="M12.438 1.668V7H11.39V2.684h-.051l-1.211.859v-.969l1.262-.906h1.046z"/>
+                        <path fill-rule="evenodd" d="M11.36 14.098c-1.137 0-1.708-.657-1.762-1.278h1.004c.058.223.343.45.773.45.824 0 1.164-.829 1.133-1.856h-.059c-.148.39-.57.742-1.261.742-.91 0-1.72-.613-1.72-1.758 0-1.148.848-1.835 1.973-1.835 1.09 0 2.063.636 2.063 2.687 0 1.867-.723 2.848-2.145 2.848zm.062-2.735c.504 0 .933-.336.933-.972 0-.633-.398-1.008-.94-1.008-.52 0-.927.375-.927 1 0 .64.418.98.934.98"/>
+                        <path d="M4.5 2.5a.5.5 0 0 0-1 0v9.793l-1.146-1.147a.5.5 0 0 0-.708.708l2 1.999.007.007a.497.497 0 0 0 .7-.006l2-2a.5.5 0 0 0-.707-.708L4.5 12.293z"/>
+                        </svg>
+                    </button>
+                </th>
+                <th scope="col" style="text-align: center;">
+                    Sto. Nino Water Level
+                    <button type="submit" class="btn mb-2" name="sort" value="Sto. Nino">
+                        <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" fill="currentColor" class="bi bi-sort-numeric-down" viewBox="0 0 16 16">
+                        <path d="M12.438 1.668V7H11.39V2.684h-.051l-1.211.859v-.969l1.262-.906h1.046z"/>
+                        <path fill-rule="evenodd" d="M11.36 14.098c-1.137 0-1.708-.657-1.762-1.278h1.004c.058.223.343.45.773.45.824 0 1.164-.829 1.133-1.856h-.059c-.148.39-.57.742-1.261.742-.91 0-1.72-.613-1.72-1.758 0-1.148.848-1.835 1.973-1.835 1.09 0 2.063.636 2.063 2.687 0 1.867-.723 2.848-2.145 2.848zm.062-2.735c.504 0 .933-.336.933-.972 0-.633-.398-1.008-.94-1.008-.52 0-.927.375-.927 1 0 .64.418.98.934.98"/>
+                        <path d="M4.5 2.5a.5.5 0 0 0-1 0v9.793l-1.146-1.147a.5.5 0 0 0-.708.708l2 1.999.007.007a.497.497 0 0 0 .7-.006l2-2a.5.5 0 0 0-.707-.708L4.5 12.293z"/>
+                        </svg>
+                    </button>
+                </th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for entry in records %}
+            <tr>
+                <td>{{ entry.datetime }}</td>
+                {% for station in entry.record_set.all %}
+                <td>{{ station.value }}</td>
+                {% endfor %}
+            </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+
+    {% else %}
+
+    <table class="table table-striped table-hover table-bordered">
+        <thead>
+            <tr>
+                <th scope="col" style="text-align: center;" class="align-middle">Date, Time</th>
+                <th scope="col" style="text-align: center;">
+                    {{ search_station_name }} {{ search_station_type }}
+                    <button type="submit" class="btn mb-2" name="sort" value="{{ search_station_name }}">
+                        <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" fill="currentColor" class="bi bi-sort-numeric-down" viewBox="0 0 16 16">
+                        <path d="M12.438 1.668V7H11.39V2.684h-.051l-1.211.859v-.969l1.262-.906h1.046z"/>
+                        <path fill-rule="evenodd" d="M11.36 14.098c-1.137 0-1.708-.657-1.762-1.278h1.004c.058.223.343.45.773.45.824 0 1.164-.829 1.133-1.856h-.059c-.148.39-.57.742-1.261.742-.91 0-1.72-.613-1.72-1.758 0-1.148.848-1.835 1.973-1.835 1.09 0 2.063.636 2.063 2.687 0 1.867-.723 2.848-2.145 2.848zm.062-2.735c.504 0 .933-.336.933-.972 0-.633-.398-1.008-.94-1.008-.52 0-.927.375-.927 1 0 .64.418.98.934.98"/>
+                        <path d="M4.5 2.5a.5.5 0 0 0-1 0v9.793l-1.146-1.147a.5.5 0 0 0-.708.708l2 1.999.007.007a.497.497 0 0 0 .7-.006l2-2a.5.5 0 0 0-.707-.708L4.5 12.293z"/>
+                        </svg>
+                    </button>
+                </th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for station in records %}
+            <tr>
+                <td>{{ station.datetime.datetime }}</td>
+                <td>{{ station.value }}</td>
+            </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+
+    {% endif %}
+
+    {% endif %}
+    </div>
+</form>
+
+{% endblock %}
+
+{% block position %}sticky-bottom{% endblock %}

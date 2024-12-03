@@ -4,22 +4,7 @@
 
 {% block content %}
 
-<form method="get" class="mb-3">
-    <div class="row">
-        <div class="col-md-4">
-            <div class="input-group">
-                <input type="date" name="date" class="form-control" 
-                       value="{{ request.GET.date|default_if_none:'' }}"
-                       onchange="this.form.submit()">
-                <div class="input-group-append">
-                    <button type="submit" class="btn btn-primary">Filter</button>
-                    <a href="{% url 'finalsapp:list-records' 1 %}" class="btn btn-secondary">Clear</a>
-                </div>
-            </div>
-        </div>
-    </div>
-</form>
-<nav aria-label="Page navigation example">
+<nav aria-label="Table page navigation">
     <ul class="pagination">
         {% if current_page == 1 %}
             <li class="page-item"><a class="page-link active disabled" href="#">{{ current_page }}</a></li>
