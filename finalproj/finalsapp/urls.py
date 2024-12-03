@@ -16,5 +16,5 @@ urlpatterns = [
 
     path("datetimes/<int:pk>/", views.datetime_detail, name='datetime-detail'),
 
-    path("queries", views.query_records, name='query-records')
+    path("queries/", views.query_records, name='query-records')
 ]
