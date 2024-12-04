@@ -85,7 +85,6 @@ def datetime_detail(request, pk):
     # oro_rainfall = float(Record.objects.get(source_station_type=Record.RAINFALL, source_station_name=Record.ORO, datetime=dt).value)
     # sto_nino_waterlevel= float(Record.objects.get(source_station_type=Record.WATERLEVEL, source_station_name=Record.STO_NINO, datetime=dt).value)
 
-    # Make the interactive pyplot for the water level
     start_time = dt.datetime - timedelta(hours=24)
     end_time = dt.datetime + timedelta(hours=24)
     
