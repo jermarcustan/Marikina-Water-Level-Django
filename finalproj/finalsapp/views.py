@@ -7,6 +7,7 @@ import plotly.offline
 from django.db.models import Case, When
 from datetime import timedelta
 from.forms import DateTimeForm
+from django.contrib import messages
 
 # Create your views here.
 def index(request):
@@ -17,13 +18,20 @@ def add_record(request):
         form = DateTimeForm()
     if request.method == 'POST':
         form = DateTimeForm(request.POST)
-        if form.is_valid():
+        submitted_datetime = form.data.get('datetime')
+        existing_datetime = DateTime.objects.filter(datetime=submitted_datetime).exists()
+        
+        if existing_datetime:
+            messages.warning(request, 'Date already exists in the database.')
+        
+        if form.is_valid() and not existing_datetime:
             form.save()
             return redirect('/finalsapp/records/1/')
     else:
         form = DateTimeForm()
     context = {"form": form, "action": "Add" }
     return render(request, 'finalsapp/record_form.html', context)
+
 
 def update_record(request, pk):
     dt = DateTime.objects.get(id = pk)
@@ -47,7 +55,7 @@ def delete_record(request, pk):
         return redirect('/finalsapp/records/1/')
     
 def list_records(request, pg):
-    records = DateTime.objects.all()
+    records = DateTime.objects.order_by('datetime')
     num_records = DateTime.objects.count()
     max_pg = ceil(num_records/50)
     second_to_last_pg = max_pg - 1
@@ -113,14 +121,12 @@ def datetime_detail(request, pk):
         )
     )
     
-    # Create figure configuration for additional interactivity
     config = {
-        'scrollZoom': True,  # Allow scrolling and zooming
-        'displayModeBar': True,  # Show the mode bar with additional tools
-        'responsive': True  # Make the plot responsive
+        'scrollZoom': True,  
+        'displayModeBar': True,  
+        'responsive': True  
     }
     
-    # Create figure and convert to div
     fig_waterlevel = go.Figure(data=[trace_water], layout=layout_water)
     plot_div_waterlevel = plotly.offline.plot(fig_waterlevel, output_type='div', include_plotlyjs=True, config=config)
     rainfall_stations = [
@@ -197,7 +203,7 @@ def query_records(request):
     query_datetime = False
     query_station = False
     
-    datetimes = DateTime.objects.all()
+    datetimes = DateTime.objects.order_by('datetime')  # Sort datetimes from oldest to newest
     records = Record.objects.all()
     queryset = None
 

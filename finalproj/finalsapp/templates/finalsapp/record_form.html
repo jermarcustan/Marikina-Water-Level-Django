@@ -11,7 +11,18 @@
     {{ form.as_ul }}
     <input type = 'submit' value = 'Submit'>
 </form>
-    
+
+{% if messages %}
+<div class="message-container">
+    {% for message in messages %}
+    <div class="alert alert-danger alert-dismissible fade show small-alert" role="alert">
+        <small>{{ message }}</small>
+        <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+    </div>
+    {% endfor %}
+</div>
+{% endif %}
+
 {% endblock %}
 
 {% block position %}fixed-bottom{% endblock %}
