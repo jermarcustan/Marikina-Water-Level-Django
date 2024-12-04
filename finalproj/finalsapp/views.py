@@ -22,7 +22,7 @@ def add_record(request):
         existing_datetime = DateTime.objects.filter(datetime=submitted_datetime).exists()
         
         if existing_datetime:
-            messages.warning(request, 'Date already exists in the database.')
+            messages.warning(request, 'The given datetime already exists in the database.')
         
         if form.is_valid() and not existing_datetime:
             form.save()
